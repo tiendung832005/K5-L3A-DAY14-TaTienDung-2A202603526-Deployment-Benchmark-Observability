@@ -1,0 +1,5 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+GET,/health,"gaierror(-2, 'Name or service not known')",4,2026-11-25T10:22:18Z,2026-11-25T10:23:02Z
+POST,/ask,"gaierror(-5, 'No address associated with hostname')",243,2026-11-25T10:21:22Z,2026-11-25T10:23:17Z
+GET,/health,"gaierror(-5, 'No address associated with hostname')",23,2026-11-25T10:21:22Z,2026-11-25T10:23:14Z
+POST,/ask,"gaierror(-2, 'Name or service not known')",21,2026-11-25T10:21:25Z,2026-11-25T10:23:10Z

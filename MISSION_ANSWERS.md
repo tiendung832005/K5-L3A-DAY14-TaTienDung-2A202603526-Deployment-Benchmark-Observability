@@ -24,13 +24,13 @@ curl -X POST "http://localhost:8000/ask?question=Hello"
 
 ### 3. Bảng so sánh `develop` và `production`
 
-| Tiêu chí | `develop` | `production` | Tầm quan trọng |
-| --- | --- | --- | --- |
-| Secret và cấu hình | Biến toàn cục ghi cứng như `OPENAI_API_KEY` và `DEBUG = True` | Đọc biến môi trường qua `config.settings` | Giảm nguy cơ lộ secret và dùng cùng một bản build cho nhiều môi trường. |
-| Logging | `print()` có thể ghi cả secret | Log JSON có các trường `time`, `level`, `msg` | Loki hoặc Datadog có thể lọc và tìm lỗi theo trường dữ liệu. |
-| Health và readiness | Thiếu probe | `/health` trả `200`, `/ready` trả `200` hoặc `503` | Hỗ trợ restart ứng dụng bị treo và định tuyến đến instance sẵn sàng. |
-| Mạng và cổng | `localhost:8000`, `reload=True` | `0.0.0.0`, cổng từ `PORT`, reload theo `settings.debug` | Cho phép Docker và nền tảng cloud chuyển traffic vào container. |
-| Vòng đời ứng dụng | Có thể ngắt request khi dừng | `lifespan` và xử lý `SIGTERM` | Cho request đang xử lý thời gian hoàn tất trước khi container dừng. |
+| Tiêu chí            | `develop`                                                     | `production`                                            | Tầm quan trọng                                                          |
+| ------------------- | ------------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Secret và cấu hình  | Biến toàn cục ghi cứng như `OPENAI_API_KEY` và `DEBUG = True` | Đọc biến môi trường qua `config.settings`               | Giảm nguy cơ lộ secret và dùng cùng một bản build cho nhiều môi trường. |
+| Logging             | `print()` có thể ghi cả secret                                | Log JSON có các trường `time`, `level`, `msg`           | Loki hoặc Datadog có thể lọc và tìm lỗi theo trường dữ liệu.            |
+| Health và readiness | Thiếu probe                                                   | `/health` trả `200`, `/ready` trả `200` hoặc `503`      | Hỗ trợ restart ứng dụng bị treo và định tuyến đến instance sẵn sàng.    |
+| Mạng và cổng        | `localhost:8000`, `reload=True`                               | `0.0.0.0`, cổng từ `PORT`, reload theo `settings.debug` | Cho phép Docker và nền tảng cloud chuyển traffic vào container.         |
+| Vòng đời ứng dụng   | Có thể ngắt request khi dừng                                  | `lifespan` và xử lý `SIGTERM`                           | Cho request đang xử lý thời gian hoàn tất trước khi container dừng.     |
 
 ## Part 2 — Docker
 
@@ -81,15 +81,15 @@ k5-day14-docker-redis-1    redis:7-alpine          "docker-entrypoint.s…"   re
 ### 1. Thông tin deploy Agent Part 6
 
 - **Nền tảng** Railway
-- **URL public** `[ĐIỀN URL RAILWAY CỦA BẠN VÀO ĐÂY]`
+- **URL public** `https://k5-l3a-day14-tatiendung-2a202603526.onrender.com`
 
 ### 2. So sánh `railway.toml` và `render.yaml`
 
-| Tiêu chí | `railway.toml` (Railway) | `render.yaml` (Render) |
-| --- | --- | --- |
-| Định dạng và cấu trúc | TOML, cấu hình một service qua `[build]` và `[deploy]`. | YAML, có thể khai báo nhiều service và database trong cùng file qua `services` và `databases`. |
-| Build và chạy | Có thể dùng Nixpacks hoặc chỉ định `dockerfilePath`, cùng các thiết lập `startCommand`, `healthcheckPath` và `restartPolicyType`. | Khai báo `runtime` (`docker` hoặc `python`), `dockerfilePath`, `buildCommand`, `startCommand` và `healthCheckPath`. |
-| Biến môi trường và Redis | Tạo service Redis riêng trên dashboard và tham chiếu `${{Redis.REDIS_URL}}`. | Khai báo service Redis (`type: redis`) và dùng `fromService` để truyền `connectionString` vào `REDIS_URL`. |
+| Tiêu chí                 | `railway.toml` (Railway)                                                                                                          | `render.yaml` (Render)                                                                                              |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Định dạng và cấu trúc    | TOML, cấu hình một service qua `[build]` và `[deploy]`.                                                                           | YAML, có thể khai báo nhiều service và database trong cùng file qua `services` và `databases`.                      |
+| Build và chạy            | Có thể dùng Nixpacks hoặc chỉ định `dockerfilePath`, cùng các thiết lập `startCommand`, `healthcheckPath` và `restartPolicyType`. | Khai báo `runtime` (`docker` hoặc `python`), `dockerfilePath`, `buildCommand`, `startCommand` và `healthCheckPath`. |
+| Biến môi trường và Redis | Tạo service Redis riêng trên dashboard và tham chiếu `${{Redis.REDIS_URL}}`.                                                      | Khai báo service Redis (`type: redis`) và dùng `fromService` để truyền `connectionString` vào `REDIS_URL`.          |
 
 ### 3. Exercise 3.3 — Pipeline CI/CD trên Google Cloud Run
 
@@ -206,9 +206,9 @@ Nginx phân phối **5 request** trong cùng một session qua **3 instance**. C
 
 ### 2. Phân biệt liveness probe và readiness probe
 
-| Probe | Kiểm tra | Khi Redis mất kết nối |
-| --- | --- | --- |
-| Liveness (`/health`) | Tiến trình còn sống. Orchestrator có thể restart container khi probe thất bại. | Vẫn trả `200 OK` nếu tiến trình ứng dụng còn sống. |
+| Probe                | Kiểm tra                                                                           | Khi Redis mất kết nối                                                                                           |
+| -------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Liveness (`/health`) | Tiến trình còn sống. Orchestrator có thể restart container khi probe thất bại.     | Vẫn trả `200 OK` nếu tiến trình ứng dụng còn sống.                                                              |
 | Readiness (`/ready`) | Instance đã sẵn sàng nhận traffic, bao gồm kiểm tra dependency qua `redis.ping()`. | Trả `503 Service Unavailable` khi Redis lỗi hoặc ứng dụng đang shutdown để load balancer tạm ngừng gửi traffic. |
 
 ## Part 6 — Final Project
@@ -249,3 +249,26 @@ Kết quả chạy `check_production_ready.py`.
 - **Hỏi gì** Hỏi cách triển khai các TODO trong `06-lab-complete/`, gồm xác thực `X-API-Key`, rate limiter sliding window trên Redis, Cost Guard, log JSON, graceful shutdown qua `lifespan` và multi-stage Dockerfile.
 - **Nhận gì** Mã nguồn triển khai các module trong `06-lab-complete/` và kịch bản kiểm thử tự động cho Part 4 và Part 5.
 - **Tự kiểm tra và thực hiện** Chạy `test_stateless.py` với ba instance agent và `python check_production_ready.py`, đạt **12/12 tiêu chí** và **43/43 checks passed**.
+
+## Part 7 — Benchmark & Observability
+
+### 1. Tổng hợp kết quả Benchmark hiệu năng & chất lượng (`develop/`)
+- **Load Test (`load_test.py`, Agent v2, 60 requests):**
+  - Ở `concurrency=1`: Throughput đạt `4.75 req/s`, latency `p50=188.6ms`, `p95=217.5ms`, `p99=828.0ms`, `error_rate=1.67%` (đạt SLO `p95 <= 500ms` và `error_rate <= 2.0%`).
+  - Khi tăng `concurrency=10`: Throughput tăng lên `26.37 req/s` (~5.5x so với `c=1`), `p95=376.3ms`, `p99=1704.8ms` (bắt đầu xuất hiện rõ tail latency do các request chậm bất thường).
+  - Khi tăng `concurrency=20`: Throughput đạt `31.26 req/s`, `p50=191.9ms`, `p95=236.9ms`, `p99=1698.4ms`.
+- **Thí nghiệm Tail Latency (`MOCK_SLOW_RATE` với 80 requests, `concurrency=10`):**
+  - `MOCK_SLOW_RATE = 0.00`: `avg=187.3ms`, `p95=217.2ms`, `p99=223.7ms` (PASS SLO).
+  - `MOCK_SLOW_RATE = 0.03`: `avg=228.3ms`, `p95=222.4ms`, `p99=1672.8ms` (PASS SLO `p95`, nhưng `p99` nhảy vọt gấp ~7.5 lần).
+  - `MOCK_SLOW_RATE = 0.15`: `avg=433.0ms`, `p95=1707.7ms`, `p99=1714.1ms` (**FAIL SLO** `p95 <= 500ms` dù `avg` vẫn dưới 500ms).
+- **Eval trên Golden Dataset (`eval/run_eval.py`, 23 câu hỏi):**
+  - **Agent v1 (không retrieval):** Accuracy = `4.35%` (`1/23`), `avg_tokens=57.6`, `total_cost=$0.000411`, `cost/câu đúng=$0.00041115` → **FAIL** Quality Gate.
+  - **Agent v2 (có retrieval, KB gốc):** Accuracy = `91.30%` (`21/23`), `avg_tokens=109.1`, `total_cost=$0.000762`, `cost/câu đúng=$0.00003627` → **PASS** Quality Gate (`>= 80%`), chỉ thiếu 2 câu `security-02` (JWT vs API key) và `scaling-03` (Kubernetes HPA).
+  - **Agent v2 (sau khi bổ sung `KNOWLEDGE_BASE`):** Accuracy = **`100.0%` (`23/23`)**, `avg_tokens=113.9`, `total_cost=$0.000788`, `cost/câu đúng=$0.00003426`, `0` regression → **PASS** Quality Gate (`>= 85%`).
+
+### 2. Kiến trúc Observability Stack & Alerting (`production/`)
+- **Luồng thu thập dữ liệu giám sát (3 trụ cột Observability):**
+  1. **Metrics (Prometheus `:9090` + Grafana `:3000`):** Các container `agent` expose endpoint `/metrics` (định dạng `prometheus_client` với `Counter`, `Gauge`, `Histogram`). Prometheus scrape định kỳ, đánh giá `alert_rules.yml` và cấp dữ liệu cho dashboard Golden Signals trên Grafana.
+  2. **Traces (OpenTelemetry OTLP `:4318` → Jaeger `:16686`):** Mỗi request `/ask` tạo một root span kèm các child span (`retrieve_context`, `llm_generate`), giúp bóc tách chính xác thời gian từng bước và gắn event `exception` khi gọi LLM lỗi.
+  3. **Logs (Structured JSON stdout):** Mọi dòng log đều xuất ra JSON chứa `request_id` và `trace_id` để đối chiếu trực tiếp từ biểu đồ latency/lỗi sang trace chi tiết trong Jaeger.
+- **Báo cáo chi tiết:** Xem đầy đủ bảng số liệu, nhận xét và phân tích trong file [`BENCHMARK_REPORT.md`](BENCHMARK_REPORT.md).

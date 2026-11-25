@@ -58,6 +58,12 @@ class LLMResult:
 # Mỗi entry: (các từ khoá kích hoạt, nội dung tài liệu)
 # ─────────────────────────────────────────────────────────
 KNOWLEDGE_BASE: list[tuple[list[str], str]] = [
+    (["deploy nghĩa là gì", "deployment", "triển khai"],
+     "Deployment (deploy) là quá trình đưa code từ máy local lên server cloud để người dùng truy cập được."),
+    (["jwt", "api key", "xác thực"],
+     "JWT là token có chữ ký số và thời gian hết hạn (exp) dùng cho phiên người dùng, còn API key là chuỗi cố định cấp cho ứng dụng hoặc dịch vụ."),
+    (["hpa", "horizontal pod autoscaler", "kubernetes"],
+     "Kubernetes HPA tự động scale số lượng pod dựa trên CPU, memory hoặc custom metrics như số request mỗi giây."),
     (["multi-stage", "multi stage"],
      "Multi-stage build tách Dockerfile thành stage builder (cài compiler, build dependencies) "
      "và stage runtime chỉ copy kết quả cần thiết. Image cuối nhỏ hơn và ít lỗ hổng bảo mật hơn."),
